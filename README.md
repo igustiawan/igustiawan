@@ -1,4 +1,4 @@
-### Hi there 👋
+# Hi, I'm Gusti 👋 💻 
 
 <!--
 **igustiawan/igustiawan** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
@@ -14,7 +14,10 @@ Here are some ideas to get you started:
 - 😄 Pronouns: ...
 - ⚡ Fun fact: ...
 -->
+### About Me
 
+- 🔭 .Net Dev @primasolusindo
+- 🌱 I’m currently learning .NET
 <p>
     <img src="https://github-readme-stats.vercel.app/api?username=igustiawan&hide=contribs,prs&show_icons=true&hide_border=true&title_color=000" />
     <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=igustiawan&layout=compact" height=180 />
