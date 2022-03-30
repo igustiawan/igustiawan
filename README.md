@@ -17,7 +17,7 @@ Here are some ideas to get you started:
 ### About Me
 
 - 🔭 .Net Dev at [Prima Solusindo](https://github.com/primasolusindo)
-- 🌱 I’m currently learning Golang
+
 <p>
     <img src="https://github-readme-stats.vercel.app/api?username=igustiawan&hide=contribs,prs&show_icons=true&hide_border=true&title_color=000" />
     <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=igustiawan&layout=compact" height=180 />
