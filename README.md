@@ -17,8 +17,12 @@ Here are some ideas to get you started:
 ### About Me
 
 - 🔭 .Net Dev at [Prima Solusindo](https://github.com/primasolusindo)
-
-<p>
-    <img src="https://github-readme-stats.vercel.app/api?username=igustiawan&hide=contribs,prs&show_icons=true&hide_border=true&title_color=000" />
-    <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=igustiawan&layout=compact" height=180 />
+  
+<p align="left">
+  <a href="https://github.com/igustiawan">
+     <img alt="Github Stats" src="https://github-readme-stats.vercel.app/api?username=igustiawan&theme=radical&show_icons=true&hide_border=true&count_private=true" />
+  </a>
+  <a href="https://github.com/igustiawan/">
+     <img alt="Most Used Language" src="https://github-readme-stats.vercel.app/api/top-langs/?username=igustiawan&theme=radical&hide_border=true&layout=compact" />
+  </a>
 </p>
