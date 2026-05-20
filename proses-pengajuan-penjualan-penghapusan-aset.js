@@ -111,10 +111,10 @@ function handleWorkflow(ctx) {
 
     // 4. Auto-enable picker yang masih kosong (mirip SharePoint:
     //    "if revbop.TotalUserCount == 0 enable picker")
-    if (!ctx.reviewerBOP) unlockField('ObjectField_reviewerBOP');
-    if (!ctx.rFA1)        unlockField('ObjectField_rFA1');
-    if (!ctx.rFA2)        unlockField('ObjectField_rFA2');
-    if (!ctx.rFA3)        unlockField('ObjectField_rFA3');
+    if (!ctx.reviewerBOP || !ctx.reviewerBOP.key) unlockField('ObjectField_reviewerBOP');
+    if (!ctx.rFA1 || !ctx.rFA1.key)              unlockField('ObjectField_rFA1');
+    if (!ctx.rFA2 || !ctx.rFA2.key)              unlockField('ObjectField_rFA2');
+    if (!ctx.rFA3 || !ctx.rFA3.key)              unlockField('ObjectField_rFA3');
 
     // 5. Cek kondisi Reject/Completed -> disable semua, stop
     const isLocked = (ctx.approvalReviewerUn === 'Reject') ||
@@ -205,10 +205,11 @@ function handleLimitDLOG(ctx) {
 
     // -------------------------------------------------------------------------
     // Reviewer Unit Kerja - Waiting Review
-    // Hanya user yang ditunjuk sebagai reviewer yang bisa approve
+    // Di SharePoint: hanya cek TotalUserCount >= 1 && status == "Waiting Review"
+    // TIDAK ada pengecekan siapa user yang login
     // -------------------------------------------------------------------------
-    if (ctx.reviewerUnitKerja && ctx.approvalReviewerUn === 'WaitingReview' &&
-        isCurrentUser(ctx.reviewerUnitKerja, ctx)) {
+    if (ctx.reviewerUnitKerja && ctx.reviewerUnitKerja.key &&
+        ctx.approvalReviewerUn === 'WaitingReview') {
         unlockField('ObjectField_approvalReviewerUn');
         unlockField('ObjectField_keteranganApprovalReviewerUn');
     }
@@ -225,11 +226,11 @@ function handleLimitDLOG(ctx) {
 
     // -------------------------------------------------------------------------
     // Pejabat Unit Kerja - Waiting Review (setelah reviewer approve)
+    // Di SharePoint: hanya cek TotalUserCount >= 1 && status == "Waiting Review" && reviewer approve
     // -------------------------------------------------------------------------
-    if (ctx.pejabatUnitKerjaX &&
+    if (ctx.pejabatUnitKerjaX && ctx.pejabatUnitKerjaX.key &&
         ctx.approvalPejabatUni === 'WaitingReview' &&
-        ctx.approvalReviewerUn === 'Approve' &&
-        isCurrentUser(ctx.pejabatUnitKerjaX, ctx)) {
+        ctx.approvalReviewerUn === 'Approve') {
         unlockField('ObjectField_approvalPejabatUni');
         unlockField('ObjectField_keteranganApprovalPejabatUni');
     }
@@ -274,11 +275,11 @@ function handleLimitDLOG(ctx) {
 
     // -------------------------------------------------------------------------
     // Reviewer BOP - Waiting Review
+    // Di SharePoint: hanya cek TotalUserCount >= 1 && status == "Waiting Review"
     // -------------------------------------------------------------------------
     if (ctx.approvalPICBOP === 'WaitingApproval' &&
-        ctx.reviewerBOP &&
-        ctx.approvalReviewerBO === 'WaitingReview' &&
-        isCurrentUser(ctx.reviewerBOP, ctx)) {
+        ctx.reviewerBOP && ctx.reviewerBOP.key &&
+        ctx.approvalReviewerBO === 'WaitingReview') {
         unlockField('ObjectField_approvalReviewerBO');
         unlockField('ObjectField_keteranganApprovalReviewerBO');
     }
@@ -307,10 +308,10 @@ function handleLimitDLOG(ctx) {
 
     // -------------------------------------------------------------------------
     // RFA 1 - Waiting Review (setelah Reviewer BOP approve)
+    // Di SharePoint: hanya cek TotalUserCount >= 1 && status == "Waiting Review" && revBOP approve
     // -------------------------------------------------------------------------
-    if (ctx.rFA1 && ctx.approvalRFA1 === 'WaitingReview' &&
-        ctx.approvalReviewerBO === 'Approve' &&
-        isCurrentUser(ctx.rFA1, ctx)) {
+    if (ctx.rFA1 && ctx.rFA1.key && ctx.approvalRFA1 === 'WaitingReview' &&
+        ctx.approvalReviewerBO === 'Approve') {
         unlockField('ObjectField_approvalRFA1');
         unlockField('ObjectField_keteranganApprovalRFA1');
     }
@@ -342,9 +343,8 @@ function handleLimitDLOG(ctx) {
     // -------------------------------------------------------------------------
     // RFA 2 - Waiting Review (setelah RFA 1 approve)
     // -------------------------------------------------------------------------
-    if (ctx.rFA2 && ctx.approvalRFA2 === 'WaitingReview' &&
-        ctx.approvalRFA1 === 'Approve' &&
-        isCurrentUser(ctx.rFA2, ctx)) {
+    if (ctx.rFA2 && ctx.rFA2.key && ctx.approvalRFA2 === 'WaitingReview' &&
+        ctx.approvalRFA1 === 'Approve') {
         unlockField('ObjectField_approvalRFA2');
         unlockField('ObjectField_keteranganApprovalRFA2');
     }
@@ -377,9 +377,8 @@ function handleLimitDLOG(ctx) {
     // -------------------------------------------------------------------------
     // RFA 3 - Waiting Review (setelah RFA 2 approve)
     // -------------------------------------------------------------------------
-    if (ctx.rFA3 && ctx.approvalRFA3 === 'WaitingReview' &&
-        ctx.approvalRFA2 === 'Approve' &&
-        isCurrentUser(ctx.rFA3, ctx)) {
+    if (ctx.rFA3 && ctx.rFA3.key && ctx.approvalRFA3 === 'WaitingReview' &&
+        ctx.approvalRFA2 === 'Approve') {
         unlockField('ObjectField_approvalRFA3');
         unlockField('ObjectField_keteranganApprovalRFA3');
     }
@@ -466,8 +465,7 @@ function handleLelangGudangBOP(ctx) {
     // -------------------------------------------------------------------------
     // Reviewer BOP - Waiting Review
     // -------------------------------------------------------------------------
-    if (ctx.reviewerBOP && ctx.approvalReviewerBO === 'WaitingReview' &&
-        isCurrentUser(ctx.reviewerBOP, ctx)) {
+    if (ctx.reviewerBOP && ctx.reviewerBOP.key && ctx.approvalReviewerBO === 'WaitingReview') {
         unlockField('ObjectField_approvalReviewerBO');
         unlockField('ObjectField_keteranganApprovalReviewerBO');
     }
@@ -531,9 +529,8 @@ function handleLelangGudangBOP(ctx) {
     // -------------------------------------------------------------------------
     // RFA 2 - Waiting Review (setelah RFA 1 approve)
     // -------------------------------------------------------------------------
-    if (ctx.rFA2 && ctx.approvalRFA2 === 'WaitingReview' &&
-        ctx.approvalRFA1 === 'Approve' &&
-        isCurrentUser(ctx.rFA2, ctx)) {
+    if (ctx.rFA2 && ctx.rFA2.key && ctx.approvalRFA2 === 'WaitingReview' &&
+        ctx.approvalRFA1 === 'Approve') {
         unlockField('ObjectField_approvalRFA2');
         unlockField('ObjectField_keteranganApprovalRFA2');
     }
@@ -566,9 +563,8 @@ function handleLelangGudangBOP(ctx) {
     // -------------------------------------------------------------------------
     // RFA 3 - Waiting Review (setelah RFA 2 approve)
     // -------------------------------------------------------------------------
-    if (ctx.rFA3 && ctx.approvalRFA3 === 'WaitingReview' &&
-        ctx.approvalRFA2 === 'Approve' &&
-        isCurrentUser(ctx.rFA3, ctx)) {
+    if (ctx.rFA3 && ctx.rFA3.key && ctx.approvalRFA3 === 'WaitingReview' &&
+        ctx.approvalRFA2 === 'Approve') {
         unlockField('ObjectField_approvalRFA3');
         unlockField('ObjectField_keteranganApprovalRFA3');
     }
@@ -1084,8 +1080,18 @@ function isCurrentUser(picker, ctx) {
 
     if (!pickerKey && !pickerName) return false;
 
+    // Match by key (userId)
     if (pickerKey && (pickerKey === myId || pickerKey === myEmail)) return true;
+
+    // Match by name (exact)
     if (pickerName && (pickerName === myEmail || pickerName === myName)) return true;
+
+    // Match by name format "Name (email)" — extract email from parentheses
+    const emailMatch = pickerName.match(/\(([^)]+)\)/);
+    if (emailMatch && emailMatch[1] === myEmail) return true;
+
+    // Match by name containing email
+    if (pickerName && pickerName.includes(myEmail)) return true;
 
     return false;
 }
