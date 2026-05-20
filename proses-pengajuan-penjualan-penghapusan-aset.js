@@ -249,10 +249,11 @@ function handleLimitDLOG(ctx) {
 
     // -------------------------------------------------------------------------
     // PIC BOP - buka semua data fields (setelah pejabat approve)
+    // Di SharePoint: tidak ada cek role, semua orang bisa lihat & edit
+    // selama approvalPICBOP kosong/OnProgress dan pejabat sudah approve
     // -------------------------------------------------------------------------
     if ((ctx.approvalPICBOP === '' || ctx.approvalPICBOP === 'OnProgress') &&
-        ctx.approvalPejabatUni === 'Approve' &&
-        ctx.isPICBOP) {
+        ctx.approvalPejabatUni === 'Approve') {
         unlockField('ObjectField_nomorRequest');
         unlockField('ObjectField_isiInisialPIC');
         unlockField('ObjectField_approvalPICBOP');
