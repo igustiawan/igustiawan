@@ -96,20 +96,27 @@ function buildContext(data, userData) {
  * MAIN HANDLER
  * ============================================================================= */
 function handleWorkflow(ctx) {
-    // 1. Lock semua field
+    // 1. Lock semua field approval & conditional
     lockAllFields();
 
     // 2. Hide semua field conditional
     hideAllConditionalFields();
 
-    // 3. Auto-enable picker yang masih kosong (mirip SharePoint:
+    // 3. Field utama requester → SELALU unlocked & visible agar bisa mengisi data awal
+    //    (Di SharePoint: Permohonan Tindaklanjut, Title, Unit Kerja Pemohon
+    //     hanya di-disable setelah ada approval/reject)
+    unlockField('ObjectField_permohonanTindaklanjut');
+    unlockField('ObjectField_title');
+    unlockField('ObjectField_keteranganRequester');
+
+    // 4. Auto-enable picker yang masih kosong (mirip SharePoint:
     //    "if revbop.TotalUserCount == 0 enable picker")
     if (!ctx.reviewerBOP) unlockField('ObjectField_reviewerBOP');
     if (!ctx.rFA1)        unlockField('ObjectField_rFA1');
     if (!ctx.rFA2)        unlockField('ObjectField_rFA2');
     if (!ctx.rFA3)        unlockField('ObjectField_rFA3');
 
-    // 4. Cek kondisi Reject/Completed -> disable semua, stop
+    // 5. Cek kondisi Reject/Completed -> disable semua, stop
     const isLocked = (ctx.approvalReviewerUn === 'Reject') ||
                      (ctx.approvalPejabatUni === 'Reject') ||
                      (ctx.approvalPICBOP     === 'Reject') ||
@@ -123,7 +130,16 @@ function handleWorkflow(ctx) {
         return;
     }
 
-    // 5. Routing per tindaklanjut
+    // 6. Jika sudah ada approval berjalan (reviewer sudah diisi dan statusnya bukan kosong),
+    //    kunci field requester agar tidak bisa diubah lagi
+    if (ctx.approvalReviewerUn && ctx.approvalReviewerUn !== '' &&
+        ctx.approvalReviewerUn !== 'Correction') {
+        lockField('ObjectField_permohonanTindaklanjut');
+        lockField('ObjectField_title');
+        lockField('ObjectField_keteranganRequester');
+    }
+
+    // 7. Routing per tindaklanjut
     switch (ctx.tindaklanjut) {
         case 'LimitDLOGNilaiBukuPerUnit50jt':
             handleLimitDLOG(ctx);
@@ -142,10 +158,22 @@ function handleWorkflow(ctx) {
             break;
     }
 
-    // 6. Status Tindaklanjut & Dokumen TL (berlaku across workflow)
+    // 8. Jika tindaklanjut belum dipilih → requester masih bisa isi data awal
+    //    Buka juga reviewer unit kerja & pejabat agar bisa assign orang
+    if (!ctx.tindaklanjut) {
+        unlockField('ObjectField_permohonanTindaklanjut');
+        unlockField('ObjectField_title');
+        unlockField('ObjectField_keteranganRequester');
+        showField('ObjectField_reviewerUnitKerja');
+        showField('ObjectField_pejabatUnitKerjaX');
+        unlockField('ObjectField_reviewerUnitKerja');
+        unlockField('ObjectField_pejabatUnitKerjaX');
+    }
+
+    // 9. Status Tindaklanjut & Dokumen TL (berlaku across workflow)
     handleStatusDokumenTL(ctx);
 
-    // 7. Group "Open All Fields" - override semua jika user punya role ini
+    // 10. Group "Open All Fields" - override semua jika user punya role ini
     if (ctx.isOpenAllFields && ctx.statusRequest === 'Completed') {
         unlockAllMainFields();
     }
