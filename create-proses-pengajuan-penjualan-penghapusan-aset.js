@@ -109,33 +109,113 @@ $(document).ready(function () {
 
     // ─── 3. WATCH PERUBAHAN PERMOHONAN TINDAKLANJUT ─────────────────
     // Di SharePoint: $("select[title='Permohonan Tindaklanjut']").change(...)
-    // Di Liferay: polling karena input bisa berupa select/input tergantung konfigurasi
-    const $permohonanField = $('div[data-field-name="ObjectField_permohonanTindaklanjut"]');
-    const $permohonanInput = $permohonanField.find('input, select').first();
-
-    if ($permohonanInput.length) {
-        // Coba bind change event langsung
-        $permohonanInput.on('change', function () {
-            handlePermohonanChange($(this).val());
-        });
-
-        // Fallback: polling untuk detect perubahan (karena Liferay kadang pakai React internal)
-        let lastVal = $permohonanInput.val() || '';
-        setInterval(function () {
-            const currentVal = $permohonanInput.val() || '';
-            if (currentVal !== lastVal) {
-                console.log('[CREATE] permohonanTindaklanjut changed:', currentVal);
-                lastVal = currentVal;
-                handlePermohonanChange(currentVal);
-            }
-        }, 300);
-    }
+    // Di Liferay Object Form: field picklist bisa berupa:
+    //   a) <select> biasa
+    //   b) hidden <input> yang di-update internal React
+    //   c) custom dropdown (div + spans)
+    // Kita pakai polling yang cek SEMUA kemungkinan value source
+    watchPermohonanTindaklanjut();
 
 
     // ─── 4. PRE-SAVE VALIDATION (pengganti SharePoint PreSaveAction) ─
     // Di SharePoint: cek attachment wajib sebelum submit
     registerCreatePreSave();
 });
+
+
+/* =============================================================================
+ * WATCH PERMOHONAN TINDAKLANJUT
+ * Menggunakan beberapa strategi untuk detect value change di Liferay:
+ *   1. Bind change/input event pada select/input
+ *   2. Polling value dari semua possible sources
+ *   3. MutationObserver pada container field
+ * ============================================================================= */
+function watchPermohonanTindaklanjut() {
+    let lastVal = '';
+
+    function getPermohonanValue() {
+        const $container = $('div[data-field-name="ObjectField_permohonanTindaklanjut"]');
+        if (!$container.length) return '';
+
+        // Cek 1: <select> element
+        const $select = $container.find('select');
+        if ($select.length && $select.val()) return $select.val();
+
+        // Cek 2: hidden input (Liferay sering pakai input[type="hidden"] untuk value picklist)
+        const $hidden = $container.find('input[type="hidden"]');
+        if ($hidden.length && $hidden.val()) return $hidden.val();
+
+        // Cek 3: input[type="text"] (kadang value key disimpan di sini)
+        const $text = $container.find('input[type="text"]');
+        if ($text.length && $text.val()) return $text.val();
+
+        // Cek 4: data attribute pada container atau child
+        const dataVal = $container.attr('data-value') || $container.find('[data-value]').attr('data-value');
+        if (dataVal) return dataVal;
+
+        // Cek 5: selected option text → convert ke key
+        const $selectedText = $container.find('.dropdown-item.active, .list-group-item.active, option:selected, .selected-label');
+        if ($selectedText.length) {
+            return mapDisplayTextToKey($selectedText.text().trim());
+        }
+
+        return '';
+    }
+
+    // Bind native events
+    const $container = $('div[data-field-name="ObjectField_permohonanTindaklanjut"]');
+    $container.on('change input', 'select, input', function () {
+        const val = getPermohonanValue();
+        if (val && val !== lastVal) {
+            lastVal = val;
+            console.log('[CREATE] permohonanTindaklanjut changed (event):', val);
+            handlePermohonanChange(val);
+        }
+    });
+
+    // MutationObserver: detect DOM changes inside the field container
+    if ($container.length) {
+        const observer = new MutationObserver(function () {
+            const val = getPermohonanValue();
+            if (val && val !== lastVal) {
+                lastVal = val;
+                console.log('[CREATE] permohonanTindaklanjut changed (mutation):', val);
+                handlePermohonanChange(val);
+            }
+        });
+        observer.observe($container[0], {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['value', 'data-value', 'class']
+        });
+    }
+
+    // Polling fallback (setiap 500ms)
+    setInterval(function () {
+        const val = getPermohonanValue();
+        if (val && val !== lastVal) {
+            lastVal = val;
+            console.log('[CREATE] permohonanTindaklanjut changed (poll):', val);
+            handlePermohonanChange(val);
+        }
+    }, 500);
+}
+
+/**
+ * Mapping display text (label) ke key value.
+ * Kadang Liferay menyimpan display text, bukan key.
+ * Tambahkan mapping sesuai Option List Anda.
+ */
+function mapDisplayTextToKey(text) {
+    const map = {
+        'Limit DLOG (nilai buku per unit <50jt)': 'LimitDLOGNilaiBukuPerUnit50jt',
+        'Limit Direksi/ Mutasi UKKP /Penghapusan Ekskom (hilang)': 'LimitDireksiMutasiUKKPPenghapusanEkskomHilang',
+        'Lelang Gudang BOP': 'LelangGudangBOP',
+        'Penjualan Aset Tetap - Hasil Review Pengembalian Barang (Khusus UKKP)': 'PenjualanAsetTetapHasilReviewPengembalianBarangKhususUKKP'
+    };
+    return map[text] || text;
+}
 
 
 /* =============================================================================
