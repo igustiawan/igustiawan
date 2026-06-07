@@ -38,13 +38,9 @@
 
 <p align="left">
   <img src="https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white" />
-  <img src="https://img.shields.io/badge/LangChain-1C3C3C?style=for-the-badge&logo=langchain&logoColor=white" />
   <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
-  <img src="https://img.shields.io/badge/Hugging_Face-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black" />
   <img src="https://img.shields.io/badge/AI_Agents-FF6F00?style=for-the-badge&logo=robot-framework&logoColor=white" />
   <img src="https://img.shields.io/badge/LLMs-7B68EE?style=for-the-badge&logo=ai&logoColor=white" />
-  <img src="https://img.shields.io/badge/RAG-00BFFF?style=for-the-badge&logo=semanticweb&logoColor=white" />
-  <img src="https://img.shields.io/badge/Vector_DB-FF4088?style=for-the-badge&logo=pinecone&logoColor=white" />
 </p>
 
 ---
@@ -70,6 +66,7 @@
 ### 🤝 Let's Connect
 
 [![GitHub](https://img.shields.io/badge/GitHub-igustiawan-181717?style=for-the-badge&logo=github)](https://github.com/igustiawan)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-igustiawan-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/igustiawan/)
 [![Website](https://img.shields.io/badge/Kizora_Labs-kizoralabs.com-blue?style=for-the-badge&logo=google-chrome&logoColor=white)](https://kizoralabs.com)
 
 </div>
