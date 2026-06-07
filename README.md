@@ -2,7 +2,7 @@
 
 # Hey there! I'm Gusti 👋
 
-### .NET Developer | Backend Enthusiast
+### .NET Developer | Backend Enthusiast | Founder of [Kizora Labs](https://kizoralabs.com)
 
 [![GitHub followers](https://img.shields.io/github/followers/igustiawan?style=social)](https://github.com/igustiawan)
 
@@ -12,6 +12,7 @@
 
 ### 🧑‍💻 About Me
 
+- 🚀 **Founder** of [Kizora Labs](https://kizoralabs.com)
 - 🔭 Currently working as a **.NET Developer** at [Prima Solusindo](https://github.com/primasolusindo)
 - 🌱 Always learning and exploring new technologies
 - 💬 Feel free to reach out if you want to talk about **C#, .NET, or backend development**
@@ -34,11 +35,11 @@
 ### 📊 GitHub Stats
 
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=igustiawan&theme=radical&show_icons=true&hide_border=true&count_private=true" alt="GitHub Stats" />
+  <img src="https://github-readme-stats-sigma-five.vercel.app/api?username=igustiawan&theme=radical&show_icons=true&hide_border=true&count_private=true" alt="GitHub Stats" />
 </p>
 
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=igustiawan&theme=radical&hide_border=true&layout=compact" alt="Top Languages" />
+  <img src="https://github-readme-stats-sigma-five.vercel.app/api/top-langs/?username=igustiawan&theme=radical&hide_border=true&layout=compact" alt="Top Languages" />
 </p>
 
 <p align="center">
@@ -52,5 +53,6 @@
 ### 🤝 Let's Connect
 
 [![GitHub](https://img.shields.io/badge/GitHub-igustiawan-181717?style=for-the-badge&logo=github)](https://github.com/igustiawan)
+[![Website](https://img.shields.io/badge/Kizora_Labs-kizoralabs.com-blue?style=for-the-badge&logo=google-chrome&logoColor=white)](https://kizoralabs.com)
 
 </div>
