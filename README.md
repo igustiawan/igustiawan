@@ -2,7 +2,7 @@
 
 # Hey there! I'm Gusti 👋
 
-### .NET Developer | Backend Enthusiast | Founder of [Kizora Labs](https://kizoralabs.com)
+### .NET Developer | Backend Enthusiast 
 
 [![GitHub followers](https://img.shields.io/github/followers/igustiawan?style=social)](https://github.com/igustiawan)
 
@@ -12,7 +12,6 @@
 
 ### 🧑‍💻 About Me
 
-- 🚀 **Founder** of [Kizora Labs](https://kizoralabs.com)
 - 🔭 Currently working as a **.NET Developer** at [Prima Solusindo](https://github.com/primasolusindo)
 - 🌱 Always learning and exploring new technologies
 - 💬 Feel free to reach out if you want to talk about **C#, .NET, or backend development**
@@ -67,6 +66,5 @@
 
 [![GitHub](https://img.shields.io/badge/GitHub-igustiawan-181717?style=for-the-badge&logo=github)](https://github.com/igustiawan)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-igustiawan-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/igustiawan/)
-[![Website](https://img.shields.io/badge/Kizora_Labs-kizoralabs.com-blue?style=for-the-badge&logo=google-chrome&logoColor=white)](https://kizoralabs.com)
 
 </div>
